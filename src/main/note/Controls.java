@@ -10,6 +10,12 @@ import main.Rect;
  * Manages events and states related to a Note's controls
  */
 public class Controls {
+    /** Minimum width of the note **/
+    public static final double MIN_WIDTH = 100;
+
+    /** Maximum width of the note **/
+    public static final double MIN_HEIGHT = 100;
+
     /** Close button for a Note **/
     public Button close;
 
@@ -87,6 +93,7 @@ public class Controls {
             Note n = new Note(_parent.get_Dimensions());
             n.TranslateNextTo(_parent.get_Dimensions());
         });
+        
         close.setOnAction(actionEvent -> _parent.Close());
 
         SetWindowScaleEvent();
@@ -108,27 +115,43 @@ public class Controls {
             _stageResizeOffsetX = mouseEvent.getScreenX() + _parent.get_Dimensions().Width;
             _stageResizeOffsetY = mouseEvent.getScreenY() + _parent.get_Dimensions().Height;
         });
+
+        close.setOnMouseEntered(mouseEvent -> {
+            _parent.get_Stage().getScene().setCursor(Cursor.DEFAULT);
+        });
+
+        create.setOnMouseEntered(mouseEvent -> {
+            _parent.get_Stage().getScene().setCursor(Cursor.DEFAULT);
+        });
+
         _parent.get_AppPane().setOnMouseDragged(mouseEvent -> {
             if (_resizeRightH) {
                 _parent.get_Dimensions().Width = mouseEvent.getX();
+                if (_parent.get_Dimensions().Width < MIN_WIDTH) _parent.get_Dimensions().Width = MIN_WIDTH;
             }
 
             if (_resizeBottomV) {
                 _parent.get_Dimensions().Height = mouseEvent.getY();
+                if (_parent.get_Dimensions().Height < MIN_HEIGHT) _parent.get_Dimensions().Height = MIN_HEIGHT;
             }
 
             if (_resizeLeftH) {
-                _parent.get_Dimensions().PositionX = mouseEvent.getScreenX() + _stageResizePositionOffsetX;
                 _parent.get_Dimensions().Width = _stageResizeOffsetX - mouseEvent.getScreenX();
+                _parent.get_Dimensions().PositionX = mouseEvent.getScreenX() + _stageResizePositionOffsetX;
+
+                if (_parent.get_Dimensions().Width < MIN_WIDTH) _parent.get_Dimensions().Width = MIN_WIDTH;
             }
 
             if (_resizeTopV) {
-                _parent.get_Dimensions().PositionY = mouseEvent.getScreenY() + _stageResizePositionOffsetY;
                 _parent.get_Dimensions().Height = _stageResizeOffsetY - mouseEvent.getScreenY();
+                _parent.get_Dimensions().PositionY = mouseEvent.getScreenY() + _stageResizePositionOffsetY;
+
+                if (_parent.get_Dimensions().Height < MIN_HEIGHT) _parent.get_Dimensions().Height = MIN_HEIGHT;
             }
 
             _parent.ApplyNoteDimensions();
         });
+
         _parent.get_AppPane().setOnMouseMoved(mouseEvent -> {
             _resizeLeftH = mouseEvent.getX() < _resizeMargin;
             _resizeRightH = mouseEvent.getX() > _parent.get_Dimensions().Width - _resizeMargin;
@@ -152,6 +175,10 @@ public class Controls {
                 if (_resizeTopV) _parent.get_Stage().getScene().setCursor(Cursor.NE_RESIZE);
                 if (_resizeBottomV) _parent.get_Stage().getScene().setCursor(Cursor.SE_RESIZE);
             }
+        });
+
+        _parent.get_AppPane().setOnMouseExited(mouseEvent -> {
+            _parent.get_Stage().getScene().setCursor(Cursor.DEFAULT);
         });
     }
 

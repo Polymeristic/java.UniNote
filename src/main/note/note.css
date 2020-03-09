@@ -59,25 +59,11 @@ Pane styling
 
 #control-pane {
     -fx-background-color: -fx-header-color;
-    -fx-pref-height: 0;
+    -fx-pref-height: 28px;
 }
 
 #content-pane #control-pane {
-    -fx-background-color: -fx-base-color;
-}
-
-#content-pane .button {
-    visibility: hidden;
-}
-
-#content-pane:hover #control-pane,
-#content-pane:focused #control-pane {
     -fx-background-color: -fx-header-color;
-}
-
-#content-pane:hover #control-pane .button,
-#content-pane:focused #control-pane .button {
-    visibility: visible;
 }
 
 /*

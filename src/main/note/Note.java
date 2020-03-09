@@ -30,10 +30,15 @@ public class Note extends Stage {
 
     /** Default note properties used when creating a new note **/
     private static final Properties DEFAULT_NOTE_PROPERTIES
-            = Properties.NONE;
+        = Properties.NONE;
 
+    /** Default dimensions used when Note created **/
     private static final Rect DEFAULT_DIMENSIONS
-            = new Rect(25, 25, 250, 250);
+        = new Rect(25, 25, 250, 250);
+
+    /** Padding between new notes **/
+    private static final int NEW_NOTE_PADDING
+        = 6;
 
     /** Position of the note **/
     private Rect _dimensions;
@@ -105,7 +110,6 @@ public class Note extends Stage {
         this(DEFAULT_DIMENSIONS, DEFAULT_CONTENT, DEFAULT_NOTE_PROPERTIES);
     }
 
-
     /**
      * Creates the stage and sets initial parameters
      */
@@ -159,13 +163,21 @@ public class Note extends Stage {
         Rectangle2D r = Screen.getPrimary().getVisualBounds();
         Rect nRect = new Rect(position);
 
-        nRect.PositionX += position.Width + 14;
+        nRect.PositionX += position.Width + NEW_NOTE_PADDING;
 
-        if (nRect.PositionX + position.Width + 14 > r.getMaxX()) {
+        if (nRect.PositionX + position.Width + NEW_NOTE_PADDING > r.getMaxX()) {
             if (nRect.PositionX + (position.Width * 0.15) > r.getMaxX()) {
-                nRect.PositionX = position.PositionX - position.Width - 14;
+                nRect.PositionX = position.PositionX - position.Width - NEW_NOTE_PADDING;
             } else {
-                nRect.PositionX = r.getMaxX() - position.Width - 14;
+                nRect.PositionX = r.getMaxX() - position.Width - NEW_NOTE_PADDING;
+            }
+        }
+
+        for (Note note : notes) {
+            if (note.get_Dimensions().PositionY == nRect.PositionY &&
+                note.get_Dimensions().PositionX == nRect.PositionX) {
+                nRect.PositionX += NEW_NOTE_PADDING * 4;
+                nRect.PositionY += NEW_NOTE_PADDING * 4;
             }
         }
 
