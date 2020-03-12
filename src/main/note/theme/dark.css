@@ -1,0 +1,8 @@
+
+* {
+    -fx-base-color: #222426;
+    -fx-header-color: #292b2e;
+    -fx-header-color-hover: rgba(0, 0, 0, 0.1);
+    -fx-header-color-focus: rgba(0, 0, 0, 0.2);
+    -fx-text-color: #fafbfc;
+}

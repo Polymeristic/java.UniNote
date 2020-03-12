@@ -4,9 +4,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -22,7 +20,7 @@ public class Note extends Stage {
 
     /** List of all notes within the application **/
     private static ArrayList<Note> notes
-        = new ArrayList<Note>();
+        = new ArrayList<>();
 
     /** Default content used when creating a new note **/
     private static final String DEFAULT_CONTENT
@@ -70,15 +68,24 @@ public class Note extends Stage {
     /** Controls associated with the Note **/
     private Controls _controls;
 
+    /** Button right tile pane **/
+    private TilePane _buttonRightTile;
+
+    /** Color of the note **/
+    private ThemeColor _color;
+
     /**
      * Creates a new Note object
+     * @param dimensions    Dimensions of the note
      * @param content       Content of the note
      * @param properties    Special properties for this note
+     * @param color         Color of the note
      */
-    public Note(Rect dimensions, String content, Properties properties) {
+    public Note(Rect dimensions, String content, Properties properties, ThemeColor color) {
         _dimensions = dimensions;
         _content = content;
         _properties = properties;
+        _color = color;
 
         SetUniqueNoteID();
         CreateStage();
@@ -92,7 +99,7 @@ public class Note extends Stage {
      * @param properties Properties of the Note
      */
     public Note(Rect dimensions, Properties properties) {
-        this(dimensions, DEFAULT_CONTENT, properties);
+        this(dimensions, DEFAULT_CONTENT, properties, ThemeControls.DEFAULT_COLOR);
     }
 
     /**
@@ -100,14 +107,14 @@ public class Note extends Stage {
      * @param dimensions Dimensions of the Note
      */
     public Note(Rect dimensions) {
-        this(dimensions, DEFAULT_CONTENT, DEFAULT_NOTE_PROPERTIES);
+        this(dimensions, DEFAULT_CONTENT, DEFAULT_NOTE_PROPERTIES, ThemeControls.DEFAULT_COLOR);
     }
 
     /**
      * Creates a new Note object using all defaults
      */
     public Note() {
-        this(DEFAULT_DIMENSIONS, DEFAULT_CONTENT, DEFAULT_NOTE_PROPERTIES);
+        this(DEFAULT_DIMENSIONS, DEFAULT_CONTENT, DEFAULT_NOTE_PROPERTIES,ThemeControls.DEFAULT_COLOR);
     }
 
     /**
@@ -119,13 +126,14 @@ public class Note extends Stage {
         _appPane = new StackPane();
         _contentPane = new BorderPane();
         _controlPane = new BorderPane();
+        _buttonRightTile = new TilePane();
 
         _scene = new Scene(_appPane, _dimensions.Width, _dimensions.Height, Color.TRANSPARENT);
         _stage.initStyle(StageStyle.TRANSPARENT);
 
-        _scene.getStylesheets().add("main/note/note.css");
-        _stage.setScene(_scene);
+        _scene.getStylesheets().addAll("main/note/theme/main.css", "main/note/theme/blue.css");
 
+        _stage.setScene(_scene);
         _stage.setTitle("Sticky Note (" + (_noteID + 1) + ")");
 
         _stage.show();
@@ -147,11 +155,20 @@ public class Note extends Stage {
         _appPane.setId("app-pane");
         _contentPane.setId("content-pane");
         _controlPane.setId("control-pane");
+        _buttonRightTile.setId("tile-right");
 
         _controls = new Controls(this, new Button("×"), new Button("+"), new TextArea());
 
+        // Add all button to the right button tile
+        _buttonRightTile.getChildren().addAll(
+            _controls.get_ThemeControls().ButtonDark,
+            _controls.get_ThemeControls().ButtonBlue,
+            _controls.get_ThemeControls().ButtonYellow,
+            _controls.close
+        );
+
         _controlPane.setLeft(_controls.create);
-        _controlPane.setRight(_controls.close);
+        _controlPane.setRight(_buttonRightTile);
         _contentPane.setCenter(_controls.text);
     }
 
@@ -215,6 +232,38 @@ public class Note extends Stage {
         }
 
         _noteID = uid;
+    }
+
+    /**
+     * Sets this note's color
+     * @param color Color to set
+     */
+    public void set_Color(ThemeColor color) {
+        _color = color;
+    }
+
+    /**
+     * Gets this note's color
+     * @return Color
+     */
+    public ThemeColor get_Color() {
+        return _color;
+    }
+
+    /**
+     * Gets the button right tile pane
+     * @return TilePane
+     */
+    public TilePane get_ButtonRightTile() {
+        return _buttonRightTile;
+    }
+
+    /**
+     * Gets the Controls object for this note
+     * @return Controls
+     */
+    public Controls get_Controls() {
+        return _controls;
     }
 
     /**
