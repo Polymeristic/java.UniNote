@@ -1,8 +1,8 @@
 package main.note;
 
 import javafx.scene.control.Button;
-
 import java.util.HashMap;
+
 
 /**
  * Manages the controls and management of themes

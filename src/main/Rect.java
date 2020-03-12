@@ -1,10 +1,5 @@
 package main;
 
-import javafx.geometry.Pos;
-
-import javax.swing.plaf.PanelUI;
-import javax.swing.text.Position;
-
 /**
  * Simple rectangle for geometric representations
  */
