@@ -34,11 +34,6 @@ public class Rect {
         Height = height;
     }
 
-
-    public void TranslateWithinXBounds(double x, double y, double lineHeight) {
-
-    }
-
     /**
      * Translates the rectangle by a given x and y value
      * @param x X to translate
