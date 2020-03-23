@@ -16,10 +16,10 @@ public class ThemeControls {
         = ThemeColor.BLUE;
 
     public static final String BUTTON_SELECTED
-        = "⚫";
+        = "\u26AB";
 
     public static final String BUTTON_UNSELECTED
-        = "⚫";
+        = "\u26AB";
 
     /** The parent note **/
     private Note _parent;

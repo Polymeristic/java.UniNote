@@ -157,7 +157,7 @@ public class Note extends Stage {
         _controlPane.setId("control-pane");
         _buttonRightTile.setId("tile-right");
 
-        _controls = new Controls(this, new Button("×"), new Button("+"), new TextArea());
+        _controls = new Controls(this, new Button("\u00D7"), new Button("\u002B"), new TextArea());
 
         // Add all button to the right button tile
         _buttonRightTile.getChildren().addAll(
