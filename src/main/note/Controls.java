@@ -148,6 +148,7 @@ public class Controls {
 
         create.setOnMouseEntered(mouseEvent -> _parent.get_Stage().getScene().setCursor(Cursor.DEFAULT));
 
+        // Set all resize events on each side of the note app
         _parent.get_AppPane().setOnMouseDragged(mouseEvent -> {
             if (_resizeRightH) {
                 _parent.get_Dimensions().Width = mouseEvent.getX();
@@ -210,6 +211,7 @@ public class Controls {
     public void SetTextareaContextMenu() {
         _controlsContextMenu = new ContextMenu();
 
+        // Add controls for the context menu
         _controlsContextMenuPaste = new MenuItem("Paste");
         _controlsContextMenuCopy = new MenuItem("Copy");
         _controlsContextMenuCut = new MenuItem("Cut");
@@ -242,6 +244,7 @@ public class Controls {
         _controlsContextMenuPaste.setOnAction(actionEvent -> {
             if (!Clipboard.getSystemClipboard().hasString()) return;
 
+            // Get carat position and insert clipboard text via substringing
             int c = text.getCaretPosition();
             String start = text.getText().substring(0, c);
             String clip = Clipboard.getSystemClipboard().getString();
@@ -312,18 +315,24 @@ public class Controls {
      * Sets the stage drag events associated with the control pane
      */
     public void SetStageDragEvent() {
+
+        // When the cursor is released, set final positions
         _parent.get_ControlPane().setOnMouseReleased(mouseEvent -> {
             // Makes note not get hidden when going too high
             if (_parent.get_Stage().getY() < 0) _parent.get_Dimensions().PositionY = 0;
 
             _parent.ApplyNoteDimensions();
         });
+
+        // When the cursor is dragged
         _parent.get_ControlPane().setOnMouseDragged(mouseEvent -> {
             _parent.get_Dimensions().PositionX = mouseEvent.getScreenX() + _stageDragOffsetX;
             _parent.get_Dimensions().PositionY = mouseEvent.getScreenY() + _stageDragOffsetY;
 
             _parent.ApplyNoteDimensions();
         });
+
+        // When the cursor is initially pressed, set initial offset states
         _parent.get_ControlPane().setOnMousePressed(mouseEvent -> {
             _stageDragOffsetX = _parent.get_Stage().getX() - mouseEvent.getScreenX();
             _stageDragOffsetY = _parent.get_Stage().getY() - mouseEvent.getScreenY();

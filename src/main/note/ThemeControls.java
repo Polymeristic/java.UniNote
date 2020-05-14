@@ -93,10 +93,12 @@ public class ThemeControls {
      * Applies the current button state to the button
      */
     public void ApplyCurrentButton() {
+        // Set all buttons to deactivated
         ButtonBlue.setText(BUTTON_UNSELECTED);
         ButtonYellow.setText(BUTTON_UNSELECTED);
         ButtonDark.setText(BUTTON_UNSELECTED);
 
+        // Set button selection based on color
         switch (_parent.get_Color()) {
             case BLUE:
                 ButtonBlue.setText(BUTTON_SELECTED);
